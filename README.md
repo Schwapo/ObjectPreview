@@ -22,7 +22,7 @@ public class SomeMonoBehaviour : MonoBehaviour
     public SomeScriptableObject someSO;
 
     // Trys to get an asset preview by calling GameObjectPreview
-    // You can also pass property names and alot of other powerful stuff
+    // You can also pass property names and a lot of other powerful stuff
     // Visit Odin's website to see what you can do with value resolvers
     [ObjectPreview("@GameObjectPreview()")]
     public GameObject someObject;
