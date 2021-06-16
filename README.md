@@ -32,7 +32,8 @@ public class SomeMonoBehaviour : MonoBehaviour
     previewGetter: "@GameObjectPreview()", tooltip: "Tooltip")]
     public GameObject someOtherObject;
 
-    private Texture2D GameObjectPreview => Resources.Load<Texture2D>("Odin Inspector Logo");
+    private Texture2D GameObjectPreview 
+        => Resources.Load<Texture2D>("Odin Inspector Logo");
 }
 ```
 
