@@ -54,7 +54,7 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
             _ => rect.AlignRight(rect.height),
         };
 
-        EditorGUI.LabelField(rect, new GUIContent("", Attribute.Tooltip));
+        DrawTooltip(rect);
 
         var value = ValueEntry.SmartValue;
 
@@ -77,7 +77,19 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
         ValueEntry.SmartValue = value;
     }
 
-    public void DrawDropZone(Rect rect, object value, GUIContent label, int id)
+    private void DrawTooltip(Rect rect)
+    {
+        var mousePosition = Event.current.mousePosition;
+
+        if (rect.Contains(mousePosition))
+        {
+            var tooltipSize = GUI.skin.label.CalcSize(new GUIContent("", Attribute.Tooltip));
+            var tooltipRect = new Rect(mousePosition, tooltipSize);
+            EditorGUI.LabelField(tooltipRect, new GUIContent("", Attribute.Tooltip));
+        }
+    }
+
+    private void DrawDropZone(Rect rect, object value, GUIContent label, int id)
     {
         var isDragging = DragAndDropUtilities.IsDragging;
 
