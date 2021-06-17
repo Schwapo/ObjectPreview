@@ -54,8 +54,6 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
             _ => rect.AlignRight(rect.height),
         };
 
-        DrawTooltip(rect);
-
         var value = ValueEntry.SmartValue;
 
         DrawDropZone(rect, value, null, dragAndDropId);
@@ -73,6 +71,8 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
             GUIUtility.keyboardControl = dragAndDropId;
             GUIUtility.hotControl = dragAndDropId;
         }
+        
+        DrawTooltip(rect);
 
         ValueEntry.SmartValue = value;
     }
