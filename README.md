@@ -38,7 +38,7 @@ public class SomeMonoBehaviour : MonoBehaviour
 ```
 
 ### Usage
-Simply put the downloaded ObjectPreviewAttribute folder in your project
+Simply put the downloaded ObjectPreview folder in your project
 and start using the attribute as shown in the examples.
 You can move the files, but make sure that `ObjectPreviewAttribute.cs`
 is not in an editor folder or it will be removed during build, causing errors.
