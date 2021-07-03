@@ -3,16 +3,19 @@ using Sirenix.OdinInspector.Editor;
 using Sirenix.OdinInspector.Editor.ValueResolvers;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreviewAttribute, T>
-    where T : Object
+public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreviewAttribute, T> where T : Object
 {
     private ValueResolver<Texture2D> previewResolver;
+    private ValueResolver<IEnumerable<T>> selectableObjectsResolver;
     private bool allowSceneObjects;
     private float height;
     private ObjectFieldAlignment alignment;
+    private GenericSelector<T> selector;
 
     protected override void Initialize()
     {
@@ -21,6 +24,7 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
             : Attribute.PreviewGetter;
 
         previewResolver = ValueResolver.Get<Texture2D>(Property, resolvedString);
+        selectableObjectsResolver = ValueResolver.Get<IEnumerable<T>>(Property, Attribute.SelectableObjectsGetter);
         allowSceneObjects = Property.GetAttribute<Sirenix.OdinInspector.AssetsOnlyAttribute>() == null;
 
         height = Attribute.Height == 0f
@@ -30,6 +34,9 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
         alignment = !Attribute.AlignmentHasValue
             ? GlobalConfig<GeneralDrawerConfig>.Instance.SquareUnityObjectAlignment
             : (ObjectFieldAlignment)Attribute.Alignment;
+
+        selector = new GenericSelector<T>("", false, item => item.name, selectableObjectsResolver.GetValue());
+        selector.SelectionConfirmed += selection => Property.ValueEntry.WeakSmartValue = selection.FirstOrDefault();
     }
 
     protected override void DrawPropertyLayout(GUIContent label)
@@ -37,6 +44,11 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
         if (Attribute.PreviewGetterHasValue)
         {
             ValueResolver.DrawErrors(previewResolver);
+        }
+
+        if (Attribute.SelectableObjectsGetterHasValue)
+        {
+            ValueResolver.DrawErrors(selectableObjectsResolver);
         }
 
         var rect = EditorGUILayout.GetControlRect(label != null, height);
@@ -60,8 +72,21 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
 
         value = (T)DragAndDropUtilities.DropZone(rect, value, typeof(T), dragAndDropId);
 
-        value = (T)DragAndDropUtilities.ObjectPickerZone(
-            rect, value, typeof(T), allowSceneObjects, dragAndDropId);
+        if (Attribute.SelectableObjectsGetterHasValue)
+        {
+            if (HoveringOverRect(rect))
+            {
+                if (GUI.Button(rect.AlignBottom(15f), "Select", SirenixGUIStyles.TagButton))
+                {
+                    selector.ShowInPopup();
+                }
+            }
+        }
+        else
+        {
+            value = (T)DragAndDropUtilities.ObjectPickerZone(
+                rect, value, typeof(T), allowSceneObjects, dragAndDropId);
+        }
 
         value = (T)DragAndDropUtilities.DragZone(
             rect, value, typeof(T), true, true, dragAndDropId);
@@ -71,7 +96,7 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
             GUIUtility.keyboardControl = dragAndDropId;
             GUIUtility.hotControl = dragAndDropId;
         }
-        
+
         DrawTooltip(rect);
 
         ValueEntry.SmartValue = value;
@@ -79,15 +104,15 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
 
     private void DrawTooltip(Rect rect)
     {
-        var mousePosition = Event.current.mousePosition;
-
-        if (rect.Contains(mousePosition))
+        if (HoveringOverRect(rect))
         {
             var tooltipSize = GUI.skin.label.CalcSize(new GUIContent("", Attribute.Tooltip));
-            var tooltipRect = new Rect(mousePosition, tooltipSize);
+            var tooltipRect = new Rect(Event.current.mousePosition, tooltipSize);
             EditorGUI.LabelField(tooltipRect, new GUIContent("", Attribute.Tooltip));
         }
     }
+
+    private bool HoveringOverRect(Rect rect) => rect.Contains(Event.current.mousePosition);
 
     private void DrawDropZone(Rect rect, object value, GUIContent label, int id)
     {
