@@ -70,8 +70,6 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
 
         DrawDropZone(rect, value, null, dragAndDropId);
 
-        value = (T)DragAndDropUtilities.DropZone(rect, value, typeof(T), dragAndDropId);
-
         if (Attribute.SelectableObjectsGetterHasValue)
         {
             if (HoveringOverRect(rect))
@@ -84,12 +82,10 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
         }
         else
         {
-            value = (T)DragAndDropUtilities.ObjectPickerZone(
-                rect, value, typeof(T), allowSceneObjects, dragAndDropId);
+            value = (T)DragAndDropUtilities.DropZone(rect, value, typeof(T), dragAndDropId);
+            value = (T)DragAndDropUtilities.ObjectPickerZone(rect, value, typeof(T), allowSceneObjects, dragAndDropId);
+            value = (T)DragAndDropUtilities.DragZone(rect, value, typeof(T), true, true, dragAndDropId);
         }
-
-        value = (T)DragAndDropUtilities.DragZone(
-            rect, value, typeof(T), true, true, dragAndDropId);
 
         if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
         {
