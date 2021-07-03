@@ -31,9 +31,22 @@ public class SomeMonoBehaviour : MonoBehaviour
     [ObjectPreview(height: 80f, alignment: ObjectFieldAlignment.Right, 
     previewGetter: "@GameObjectPreview()", tooltip: "Tooltip")]
     public GameObject someOtherObject;
+    
+    // Update: Added SelectableObjectsGetter parameter that allows you
+    // to pass all objects that are selectable to the object preview
+    // the select button will then open a value dropdown that lets
+    // you select one of the selectable objects
+    [ObjectPreview(SelectableObjectsGetter = "GetSelectables")]
+    public Texture2D anotherOne;
 
     private Texture2D GameObjectPreview 
         => Resources.Load<Texture2D>("Odin Inspector Logo");
+        
+    private IEnumerable<Texture2D> GetSelectables()
+        => AssetDatabase
+            .FindAssets("t:Texture2D")
+            .Select(AssetDatabase.GUIDToAssetPath)
+            .Select(AssetDatabase.LoadAssetAtPath<Texture2D>);
 }
 ```
 
