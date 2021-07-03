@@ -9,9 +9,11 @@ public class ObjectPreviewAttribute : Attribute
     public float Height { get; set; }
     public string Tooltip { get; set; }
     public bool PreviewGetterHasValue { get; private set; }
+    public bool SelectableObjectsGetterHasValue { get; private set; }
     public bool AlignmentHasValue { get; private set; }
 
     private string previewGetter;
+    private string selectableObjectsGetter;
     private ObjectFieldAlignment alignment;
 
     public string PreviewGetter
@@ -21,6 +23,16 @@ public class ObjectPreviewAttribute : Attribute
         {
             previewGetter = value;
             PreviewGetterHasValue = true;
+        }
+    }
+
+    public string SelectableObjectsGetter
+    {
+        get => selectableObjectsGetter;
+        set
+        {
+            selectableObjectsGetter = value;
+            SelectableObjectsGetterHasValue = true;
         }
     }
 
