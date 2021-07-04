@@ -15,34 +15,35 @@ public class SomeScriptableObject : ScriptableObject
 
 public class SomeMonoBehaviour : MonoBehaviour
 {
-    // If you dont provide a string to resolve then it will
+    // If you dont provide a string to resolve it will
     // first look for a field named preview on the target object
     // if it cant be found it will try to get a default asset thumbnail
     [ObjectPreview]
-    public SomeScriptableObject someSO;
+    public NewScriptableObject SomeSO;
 
     // Trys to get an asset preview by calling GameObjectPreview
     // You can also pass property names and a lot of other powerful stuff
     // Visit Odin's website to see what you can do with value resolvers
-    [ObjectPreview("@GameObjectPreview()")]
-    public GameObject someObject;
+    [ObjectPreview(Preview = nameof(GameObjectPreview))]
+    public GameObject SomeObject;
+
+    // Providing a value to the Selectables parameter will change the
+    // behaviour of the select button to draw a dropdown with all the values
+    // provided by the resolved value instead of opening an asset selector
+    // !!! Note that drag and drop is disabled in this case to prevent
+    // you from dragging a value inside the field that is not selectable !!!
+    [ObjectPreview(Selectables = nameof(Selectables))]
+    public Texture2D SomeOtherObject;
 
     // All available parameters
-    [ObjectPreview(height: 80f, alignment: ObjectFieldAlignment.Right, 
-    previewGetter: "@GameObjectPreview()", tooltip: "Tooltip")]
-    public GameObject someOtherObject;
-    
-    // Update: Added SelectableObjectsGetter parameter that allows you
-    // to pass all objects that are selectable to the object preview
-    // the select button will then open a value dropdown that lets
-    // you select one of the selectable objects
-    [ObjectPreview(SelectableObjectsGetter = "GetSelectables")]
-    public Texture2D anotherOne;
+    [ObjectPreview(Height = 80f, Alignment = ObjectFieldAlignment.Right, Tooltip = "Tooltip",
+    Preview = nameof(GameObjectPreview), Selectables = nameof(Selectables))]
+    public Texture2D AllParameters;
 
-    private Texture2D GameObjectPreview 
+    private Texture2D GameObjectPreview
         => Resources.Load<Texture2D>("Odin Inspector Logo");
-        
-    private IEnumerable<Texture2D> GetSelectables()
+
+    private IEnumerable<Texture2D> Selectables
         => AssetDatabase
             .FindAssets("t:Texture2D")
             .Select(AssetDatabase.GUIDToAssetPath)
