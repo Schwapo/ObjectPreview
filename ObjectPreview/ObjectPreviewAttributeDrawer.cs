@@ -11,7 +11,7 @@ using UnityEngine;
 public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreviewAttribute, T> where T : Object
 {
     private ValueResolver<Texture2D> previewResolver;
-    private ValueResolver<IEnumerable<T>> selectableObjectsResolver;
+    private ValueResolver<IEnumerable<T>> selectablesResolver;
     private bool allowSceneObjects;
     private float height;
     private ObjectFieldAlignment alignment;
@@ -19,12 +19,12 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
 
     protected override void Initialize()
     {
-        var resolvedString = Attribute.PreviewGetter.IsNullOrWhitespace()
+        var resolvedString = Attribute.Preview.IsNullOrWhitespace()
             ? "@$value.preview"
-            : Attribute.PreviewGetter;
+            : Attribute.Preview;
 
         previewResolver = ValueResolver.Get<Texture2D>(Property, resolvedString);
-        selectableObjectsResolver = ValueResolver.Get<IEnumerable<T>>(Property, Attribute.SelectableObjectsGetter);
+        selectablesResolver = ValueResolver.Get<IEnumerable<T>>(Property, Attribute.Selectables);
         allowSceneObjects = Property.GetAttribute<Sirenix.OdinInspector.AssetsOnlyAttribute>() == null;
 
         height = Attribute.Height == 0f
@@ -35,20 +35,20 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
             ? GlobalConfig<GeneralDrawerConfig>.Instance.SquareUnityObjectAlignment
             : (ObjectFieldAlignment)Attribute.Alignment;
 
-        selector = new GenericSelector<T>("", false, item => item.name, selectableObjectsResolver.GetValue());
+        selector = new GenericSelector<T>("", false, item => item.name, selectablesResolver.GetValue());
         selector.SelectionConfirmed += selection => Property.ValueEntry.WeakSmartValue = selection.FirstOrDefault();
     }
 
     protected override void DrawPropertyLayout(GUIContent label)
     {
-        if (Attribute.PreviewGetterHasValue)
+        if (Attribute.PreviewHasValue)
         {
             ValueResolver.DrawErrors(previewResolver);
         }
 
-        if (Attribute.SelectableObjectsGetterHasValue)
+        if (Attribute.SelectablesHasValue)
         {
-            ValueResolver.DrawErrors(selectableObjectsResolver);
+            ValueResolver.DrawErrors(selectablesResolver);
         }
 
         var rect = EditorGUILayout.GetControlRect(label != null, height);
@@ -70,7 +70,7 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
 
         DrawDropZone(rect, value, null, dragAndDropId);
 
-        if (Attribute.SelectableObjectsGetterHasValue)
+        if (Attribute.SelectablesHasValue)
         {
             if (HoveringOverRect(rect))
             {
