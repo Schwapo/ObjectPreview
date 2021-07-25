@@ -134,12 +134,10 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
         else if (obj)
         {
             var previewObject = previewResolver.GetValue() as Object;
-            var previewTexture = GUIHelper.GetAssetThumbnail(previewObject, previewObject.GetType(), true);
 
-            if (previewTexture == null)
-            {
-                previewTexture = GUIHelper.GetAssetThumbnail(obj, obj.GetType(), true);
-            }
+            var previewTexture = previewObject == null
+                ? GUIHelper.GetAssetThumbnail(obj, obj.GetType(), true)
+                : GUIHelper.GetAssetThumbnail(previewObject, previewObject.GetType(), true);
 
             rect = rect.Padding(2f);
             var rectSize = Mathf.Min(rect.width, rect.height);
