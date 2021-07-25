@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreviewAttribute, T> where T : Object
 {
-    private ValueResolver<Texture2D> previewResolver;
+    private ValueResolver<object> previewResolver;
     private ValueResolver<IEnumerable<T>> selectablesResolver;
     private bool allowSceneObjects;
     private float height;
@@ -23,7 +23,7 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
             ? "@$value.preview"
             : Attribute.Preview;
 
-        previewResolver = ValueResolver.Get<Texture2D>(Property, resolvedString);
+        previewResolver = ValueResolver.Get<object>(Property, resolvedString);
         selectablesResolver = ValueResolver.Get<IEnumerable<T>>(Property, Attribute.Selectables);
         allowSceneObjects = Property.GetAttribute<Sirenix.OdinInspector.AssetsOnlyAttribute>() == null;
 
@@ -133,19 +133,19 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
         }
         else if (obj)
         {
-            var texture = previewResolver.GetValue();
+            var previewObject = previewResolver.GetValue() as Object;
+            var previewTexture = GUIHelper.GetAssetThumbnail(previewObject, previewObject.GetType(), true);
 
-            if (texture == null)
+            if (previewTexture == null)
             {
-                texture = GUIHelper.GetAssetThumbnail(
-                    obj, obj.GetType(), preferObjectPreviewOverFileIcon: true);
+                previewTexture = GUIHelper.GetAssetThumbnail(obj, obj.GetType(), true);
             }
 
             rect = rect.Padding(2f);
             var rectSize = Mathf.Min(rect.width, rect.height);
 
             EditorGUI.DrawTextureTransparent(
-                rect.AlignCenter(rectSize, rectSize), texture, ScaleMode.ScaleToFit);
+                rect.AlignCenter(rectSize, rectSize), previewTexture, ScaleMode.ScaleToFit);
 
             if (label != null)
             {
