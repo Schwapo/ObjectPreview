@@ -53,7 +53,7 @@ Alignment   | Determines the position of the preview image                      
 FilterMode  | Determines the filter mode that is used when the preview image is displayed             | [FilterMode.Point]                | [FilterMode]
 Tooltip     | Determines the tooltip that is displayed when you move the mouse over the preview image | [null]                            | [string]
 Selectables | A resolved string that determines which values can be selected for this preview field. Setting this parameter automatically adds a selection button that allows you to select one of the selectable values. Setting this will also disable drag and drop to ensure that only selectable values are set. | [null] | [string] / [ValueResolver]
-Preview     | A Resolved string that determines the image that gets used as a preview. If no value is provided it will first try to find a property called preview on the target object if that also fails it will use the assets default thumbnail. | "preview" | [string] / [ValueResolver]
+Preview     | A Resolved string that determines the image that gets used as a preview. If no value is provided it will first try to find a property called preview on the target object if that also fails it will use the assets default thumbnail. | "@$value.preview" | [string] / [ValueResolver]
 
 [Odin Inspector]: https://odininspector.com/
 [ValueResolver]: https://odininspector.com/documentation/sirenix.odininspector.editor.valueresolvers.valueresolver-1
