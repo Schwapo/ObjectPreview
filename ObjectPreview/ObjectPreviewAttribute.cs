@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using System;
 using System.Diagnostics;
+using UnityEngine;
 
 [Conditional("UNITY_EDITOR")]
 [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
