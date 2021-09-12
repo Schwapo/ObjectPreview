@@ -37,7 +37,7 @@ public class SomeMonoBehaviour : MonoBehaviour
 
     // All available parameters
     [ObjectPreview(Height = 80f, Alignment = ObjectFieldAlignment.Right, Tooltip = "Tooltip",
-    Preview = nameof(GameObjectPreview), Selectables = nameof(Selectables))]
+    Preview = nameof(GameObjectPreview), Selectables = nameof(Selectables), FilterMode = FilterMode.Point)]
     public Texture2D AllParameters;
 
     private Texture2D GameObjectPreview
