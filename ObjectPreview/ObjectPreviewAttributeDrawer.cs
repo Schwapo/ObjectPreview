@@ -138,6 +138,8 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
             var previewTexture = previewObject == null
                 ? GUIHelper.GetAssetThumbnail(obj, obj.GetType(), true)
                 : GUIHelper.GetAssetThumbnail(previewObject, previewObject.GetType(), true);
+                
+            previewTexture.filterMode = Attribute.FilterMode;
 
             rect = rect.Padding(2f);
             var rectSize = Mathf.Min(rect.width, rect.height);
