@@ -1,6 +1,7 @@
 # ObjectPreview
 
-#### Draws object previews similar to Odin's [PreviewField attribute], but with more configurability. (Requires [Odin Inspector])
+#### Draws object previews similar to Odin's [PreviewField attribute], but with more configurability. 
+#### Requires [Odin Inspector]
 
 ### Installation
 Simply put the downloaded ObjectPreview folder in your project
@@ -19,8 +20,9 @@ public class SomeScriptableObject : ScriptableObject
 // SomeMonoBehaviour.cs
 public class SomeMonoBehaviour : MonoBehaviour
 {
-    // We don't provide a preview string to resolve, so it looks for a field named "preview" on the target object first
-    // If that also fails, the object's default asset thumbnail is used.
+    // We don't provide a preview string to resolve, so it looks for a field 
+    // named "preview" on the object first If that also fails, the object's 
+    // default asset thumbnail is used.
     [ObjectPreview]
     public SomeScriptableObject SomeSO;
 
@@ -38,8 +40,7 @@ public class SomeMonoBehaviour : MonoBehaviour
         Resources.Load<Texture2D>("Odin Inspector Logo");
 
     private IEnumerable<Texture2D> GetSelectables() => 
-        AssetDatabase
-            .FindAssets("t:Texture2D")
+        AssetDatabase.FindAssets("t:Texture2D")
             .Select(AssetDatabase.GUIDToAssetPath)
             .Select(AssetDatabase.LoadAssetAtPath<Texture2D>);
 }
