@@ -52,6 +52,7 @@ Parameter   | Description                                                       
 Height      | Determines the width and height of the square preview                                   | Configurable in Odin preferences. | [float]
 Alignment   | Determines the position of the preview image                                            | Configurable in Odin preferences. | [ObjectFieldAlignment]
 FilterMode  | Determines the filter mode that is used when the preview image is displayed             | [FilterMode.Point]                | [FilterMode]
+Transparent | Determines if the preview should have a transparent background instead of grey boxes    | false                             | [bool]
 Tooltip     | Determines the tooltip that is displayed when you move the mouse over the preview image | [null]                            | [string]
 Selectables | A resolved string that determines which values can be selected for this preview field. Setting this parameter automatically adds a selection button that allows you to select one of the selectable values. Setting this will also disable drag and drop to ensure that only selectable values are set. | [null] | [string] / [ValueResolver]
 Preview     | A Resolved string that determines the image that gets used as a preview. If no value is provided it will first try to find a property called preview on the target object if that also fails it will use the assets default thumbnail. | "@$value.preview" | [string] / [ValueResolver]
@@ -62,6 +63,7 @@ Preview     | A Resolved string that determines the image that gets used as a pr
 
 [float]: https://docs.microsoft.com/bs-latn-ba/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types
 [string]: https://docs.microsoft.com/bs-latn-ba/dotnet/csharp/language-reference/builtin-types/reference-types#the-string-type
+[bool]: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/bool
 [null]: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/null
 [FilterMode]: https://docs.unity3d.com/ScriptReference/FilterMode.html
 [FilterMode.Point]: https://docs.unity3d.com/ScriptReference/FilterMode.Point.html
