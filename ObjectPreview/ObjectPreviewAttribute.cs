@@ -10,6 +10,7 @@ public class ObjectPreviewAttribute : Attribute
     public float Height { get; set; }
     public string Tooltip { get; set; }
     public FilterMode FilterMode { get; set; }
+    public bool Transparent { get; set; }
     public bool PreviewHasValue { get; private set; }
     public bool SelectablesHasValue { get; private set; }
     public bool AlignmentHasValue { get; private set; }

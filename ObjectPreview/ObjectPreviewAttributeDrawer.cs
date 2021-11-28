@@ -144,8 +144,15 @@ public class ObjectPreviewAttributeDrawer<T> : OdinAttributeDrawer<ObjectPreview
             rect = rect.Padding(2f);
             var rectSize = Mathf.Min(rect.width, rect.height);
 
-            EditorGUI.DrawTextureTransparent(
-                rect.AlignCenter(rectSize, rectSize), previewTexture, ScaleMode.ScaleToFit);
+            if (Attribute.Transparent)
+            {
+                GUI.DrawTexture(rect.AlignCenter(rectSize, rectSize), previewTexture, ScaleMode.ScaleToFit);
+            }
+            else
+            {
+                EditorGUI.DrawTextureTransparent(
+                    rect.AlignCenter(rectSize, rectSize), previewTexture, ScaleMode.ScaleToFit);
+            }
 
             if (label != null)
             {
