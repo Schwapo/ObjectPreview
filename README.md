@@ -1,8 +1,7 @@
 # ObjectPreview
 
-```diff
-- Deprecated! Nearly all of these improvements are now integrated into Odin Inspector.
-```
+### $${\color{Goldenrod}\textnormal{Deprecated! \ Nearly \ all \ of \ these \ improvements \ are \ now \ integrated \ into \ Odin \ Inspector.}}$$
+
 #### Draws object previews similar to Odin's [PreviewField attribute], but with more configurability. 
 #### Requires [Odin Inspector]
 
